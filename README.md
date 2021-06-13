@@ -17,8 +17,8 @@ $ terraform destroy
 ## Technology used
 - on local
   - Ubuntu 20.04.2 LTS
-  - Terraform v0.15.4
-  - azure-cli 2.23.0
+  - Terraform v1.0.0
+  - azure-cli 2.61.0
 
 
 ### Tips
@@ -26,20 +26,21 @@ $ terraform destroy
 ```
 ## Before switching
 $ tfenv list
-* 0.12.28 (set by /home/gkz/.tfenv/version)
+* 0.15.4 (set by /home/gkz/.tfenv/version)
+  0.12.28
   0.12.5
 
 ## How far can you upgrade
-$ tfenv list-remote | grep 15
-0.15.4
-0.15.3
+$ tfenv list-remote | grep -E "^1.0"
+1.0.0
 
-## Install v0.15.4
-$ tfenv install 0.15.4
+## Install v1.0.0
+$ tfenv install 1.0.0
 
 ## Check if you were able to upgrade
 $ tfenv list
-* 0.15.4 (set by /home/gkz/.tfenv/version)
+* 1.0.0 (set by $HOME/.tfenv/version)
+  0.15.4
   0.12.28
   0.12.5
 ```
