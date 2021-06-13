@@ -1,6 +1,18 @@
 # https://github.com/terraform-providers/terraform-provider-azurerm/blob/master/examples/virtual-machines/windows/basic-password/main.tf
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/azure_cli
 # https://owendavies.net/articles/create-azure-virtual-machine-with-terraform/
+
+
+
+/*
+https://docs.microsoft.com/en-us/azure/developer/terraform/create-linux-virtual-machine-with-infrastructure
+
+tags = {
+        environment = "Terraform Demo"
+}
+*/
+
+
 terraform {
 
   required_providers {
@@ -21,6 +33,10 @@ provider "azurerm" {
 resource "azurerm_resource_group" "main" {
   name     = "${var.prefix}-resources"
   location = var.location
+
+  tags = {
+    environment = "${var.environment}"
+  }
 }
 
 resource "azurerm_virtual_network" "main" {
@@ -28,6 +44,10 @@ resource "azurerm_virtual_network" "main" {
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
+
+  tags = {
+    environment = "${var.environment}"
+  }
 }
 
 resource "azurerm_subnet" "internal" {
@@ -47,6 +67,10 @@ resource "azurerm_network_interface" "main" {
     subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.main.id
+  }
+
+  tags = {
+    environment = "${var.environment}"
   }
 }
 
@@ -72,6 +96,10 @@ resource "azurerm_windows_virtual_machine" "main" {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
   }
+
+  tags = {
+    environment = "${var.environment}"
+  }
 }
 
 ########################
@@ -82,7 +110,12 @@ resource "azurerm_public_ip" "main" {
   resource_group_name = azurerm_resource_group.main.name
   allocation_method   = "Dynamic"
   sku                 = "Basic"
+
+  tags = {
+    environment = "${var.environment}"
+  }
 }
+
 
 
 ## https://github.com/terraform-providers/terraform-provider-azurerm/blob/master/examples/virtual-machines/virtual_machine/multiple-network-interfaces/main.tf
@@ -102,5 +135,9 @@ resource "azurerm_network_security_group" "main" {
     destination_port_range     = "3389"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
+  }
+
+  tags = {
+    environment = "${var.environment}"
   }
 }

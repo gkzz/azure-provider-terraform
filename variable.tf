@@ -2,6 +2,10 @@ variable "prefix" {
   default = "tf"
 }
 
+variable "environment" {
+  default = "dev"
+}
+
 variable "hostname" {
   default = "tf-vm"
 }
