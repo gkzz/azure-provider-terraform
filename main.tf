@@ -118,7 +118,7 @@ resource "azurerm_public_ip" "main" {
 
 
 
-## https://github.com/terraform-providers/terraform-provider-azurerm/blob/master/examples/virtual-machines/virtual_machine/multiple-network-interfaces/main.tf
+## https://github.com/terraform-providers/terraform-provider-azurerm/blob/master/examples/virtual-machines/virtual_machine/multiple-network-interfaces/main.tf#L60
 resource "azurerm_network_security_group" "main" {
   name                = "${var.prefix}-nsg"
   location            = azurerm_resource_group.main.location
