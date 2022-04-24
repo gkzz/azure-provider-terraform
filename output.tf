@@ -7,7 +7,8 @@ output "environment" {
 
 ## https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription
 output "azurerm_subscription_name" {
-  value = data.azurerm_subscription.main.display_name
+  value     = data.azurerm_subscription.main.display_name
+  sensitive = true
 }
 
 output "hostname" {
@@ -25,7 +26,8 @@ output "admin_username" {
 }
 
 output "admin_password" {
-  value = var.admin_password
+  value     = var.admin_password
+  sensitive = true
 }
 
 
