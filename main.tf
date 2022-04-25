@@ -79,8 +79,12 @@ resource "azurerm_virtual_machine" "main" {
   name                = "${var.prefix}-vm"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
-  #vm_size                = "Standard_F2"
-  vm_size             = "Standard_D4s_v3"
+
+  size                = "Standard_F2"
+  #size = "Standard_D4s_v3"
+  admin_username      = var.admin_username
+  admin_password      = var.admin_password
+
   network_interface_ids = [
     azurerm_network_interface.main.id
   ]
@@ -175,6 +179,7 @@ resource "azurerm_network_security_group" "main" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+
   tags = {
     environment = "${var.environment}"
   }
