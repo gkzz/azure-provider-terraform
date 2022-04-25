@@ -18,8 +18,10 @@ variable "tenant_id" {
 
 }
 
+#https://github.com/claranet/terraform-azurerm-regions/blob/master/REGIONS.md
 variable "location" {
-  default = "eastus"
+  #default = "eastus"
+  default = "jap-east"
 }
 
 variable "admin_username" {

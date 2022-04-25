@@ -74,28 +74,44 @@ resource "azurerm_network_interface" "main" {
   }
 }
 
-resource "azurerm_windows_virtual_machine" "main" {
+#https://github.com/hashicorp/terraform-provider-azurerm/blob/b0c897055329438be6a3a159f6ffac4e1ce958f2/examples/virtual-machines/virtual_machine/provisioners/windows/main.tf
+resource "azurerm_virtual_machine" "main" {
   name                = "${var.prefix}-vm"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
+
   size                = "Standard_F2"
   #size = "Standard_D4s_v3"
   admin_username      = var.admin_username
   admin_password      = var.admin_password
+
   network_interface_ids = [
-    azurerm_network_interface.main.id,
+    azurerm_network_interface.main.id
   ]
 
-  source_image_reference {
+  storage_image_reference {
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"
     sku       = "2019-Datacenter"
     version   = "latest"
   }
 
-  os_disk {
-    storage_account_type = "Standard_LRS"
-    caching              = "ReadWrite"
+  storage_os_disk {
+    name              = "${var.prefix}-vm"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+
+  os_profile {
+    computer_name  = "${var.prefix}-vm"
+    admin_username = var.admin_username
+    admin_password = var.admin_password
+  }
+
+  #https://jackstromberg.com/2017/01/list-of-time-zones-consumed-by-azure/
+  os_profile_windows_config {
+    timezone = "Tokyo Standard Time"
   }
 
   tags = {
@@ -163,8 +179,6 @@ resource "azurerm_network_security_group" "main" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-
-
 
   tags = {
     environment = "${var.environment}"
