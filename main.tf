@@ -79,8 +79,9 @@ resource "azurerm_windows_virtual_machine" "main" {
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   size                = "Standard_F2"
-  admin_username      = "${var.admin_username}"
-  admin_password      = "${var.admin_password}"
+  #size = "Standard_D4s_v3"
+  admin_username      = var.admin_username
+  admin_password      = var.admin_password
   network_interface_ids = [
     azurerm_network_interface.main.id,
   ]
@@ -136,6 +137,34 @@ resource "azurerm_network_security_group" "main" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+
+  security_rule {
+    name                       = "allow_HTTPS"
+    description                = "Allow HTTPS access"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "allow_HTTP"
+    description                = "Allow HTTP access"
+    priority                   = 130
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+
 
   tags = {
     environment = "${var.environment}"
